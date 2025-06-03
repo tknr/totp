@@ -1,82 +1,55 @@
-<?php
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOTP Demo</title>
+    <script src="//cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 font-sans">
+<div class="container mx-auto p-6 max-w-md">
+    <!-- Enable 2FA Section -->
+    <section class="bg-white p-8 rounded-xl shadow-lg text-center">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Account Security</h1>
+        <p class="text-gray-600 mb-6">
+            Secure your account by enabling 2FA. Scan the QR code with your authenticator app.
+        </p>
 
-declare(strict_types=1);
+        <!-- Enable 2FA Button -->
+        <button id="enable2FA"
+                class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-8 py-3 rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all duration-300 transform hover:scale-105">
+            Enable 2FA
+        </button>
 
-use App\Application\Handlers\HttpErrorHandler;
-use App\Application\Handlers\ShutdownHandler;
-use App\Application\ResponseEmitter\ResponseEmitter;
-use App\Application\Settings\SettingsInterface;
-use DI\ContainerBuilder;
-use Slim\Factory\AppFactory;
-use Slim\Factory\ServerRequestCreatorFactory;
+        <!-- QR Code Section (Hidden by Default) -->
+        <div id="qrSection" class="mt-6 hidden">
+            <div class="bg-white p-6 rounded-lg">
+                <img id="qrImage" src="" alt="QR Code" class="mx-auto w-48 h-48"/>
+                <p class="text-gray-600 mt-4 text-sm">
+                    Scan this QR code with your authenticator app.
+                </p>
+            </div>
 
-require __DIR__ . '/../vendor/autoload.php';
+            <!-- Verification Box -->
+            <div class="mt-6">
+                <label for="verifyCodeInput" class="sr-only">Enter TOTP Code</label>
+                <input
+                    id="verifyCodeInput"
+                    type="text"
+                    placeholder="Enter TOTP Code"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <button id="verifyCode"
+                        class="mt-4 bg-gradient-to-r from-green-500 to-teal-500 text-white px-8 py-3 rounded-lg hover:from-green-600 hover:to-teal-600 transition-all duration-300 transform hover:scale-105">
+                    Verify Code
+                </button>
+            </div>
 
-// Instantiate PHP-DI ContainerBuilder
-$containerBuilder = new ContainerBuilder();
-
-if (false) { // Should be set to true in production
-	$containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
-}
-
-// Set up settings
-$settings = require __DIR__ . '/../app/settings.php';
-$settings($containerBuilder);
-
-// Set up dependencies
-$dependencies = require __DIR__ . '/../app/dependencies.php';
-$dependencies($containerBuilder);
-
-// Set up repositories
-$repositories = require __DIR__ . '/../app/repositories.php';
-$repositories($containerBuilder);
-
-// Build PHP-DI Container instance
-$container = $containerBuilder->build();
-
-// Instantiate the app
-AppFactory::setContainer($container);
-$app = AppFactory::create();
-$callableResolver = $app->getCallableResolver();
-
-// Register middleware
-$middleware = require __DIR__ . '/../app/middleware.php';
-$middleware($app);
-
-// Register routes
-$routes = require __DIR__ . '/../app/routes.php';
-$routes($app);
-
-/** @var SettingsInterface $settings */
-$settings = $container->get(SettingsInterface::class);
-
-$displayErrorDetails = $settings->get('displayErrorDetails');
-$logError = $settings->get('logError');
-$logErrorDetails = $settings->get('logErrorDetails');
-
-// Create Request object from globals
-$serverRequestCreator = ServerRequestCreatorFactory::create();
-$request = $serverRequestCreator->createServerRequestFromGlobals();
-
-// Create Error Handler
-$responseFactory = $app->getResponseFactory();
-$errorHandler = new HttpErrorHandler($callableResolver, $responseFactory);
-
-// Create Shutdown Handler
-$shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
-register_shutdown_function($shutdownHandler);
-
-// Add Routing Middleware
-$app->addRoutingMiddleware();
-
-// Add Body Parsing Middleware
-$app->addBodyParsingMiddleware();
-
-// Add Error Middleware
-$errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails);
-$errorMiddleware->setDefaultErrorHandler($errorHandler);
-
-// Run App & Emit Response
-$response = $app->handle($request);
-$responseEmitter = new ResponseEmitter();
-$responseEmitter->emit($response);
+            <!-- Verification Result -->
+            <div id="verificationResult" class="mt-6 p-4 rounded-lg text-center text-lg font-semibold hidden"></div>
+        </div>
+    </section>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>
