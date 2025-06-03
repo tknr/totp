@@ -1,0 +1,86 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "5e1d8c80eb2f8443c197fff47ac19808",
+    "packages": [
+        {
+            "name": "remotemerge/totp-php",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/remotemerge/totp-php.git",
+                "reference": "35d3db5409b2a3c9e03bef43ff2a64f7dbe4c41c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/remotemerge/totp-php/zipball/35d3db5409b2a3c9e03bef43ff2a64f7dbe4c41c",
+                "reference": "35d3db5409b2a3c9e03bef43ff2a64f7dbe4c41c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.70.0",
+                "phpunit/phpunit": "^10.5.45",
+                "rector/rector": "^2.0.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RemoteMerge\\Totp\\": "src/Totp",
+                    "RemoteMerge\\Utils\\": "src/Utils"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Madan Sapkota",
+                    "email": "contact+github@madansapkota.com",
+                    "homepage": "https://madansapkota.com"
+                }
+            ],
+            "description": "Lightweight, fast, and secure TOTP (2FA) authentication library for PHP — battle tested, dependency free, and ready for enterprise integration.",
+            "homepage": "https://github.com/remotemerge/totp-php",
+            "keywords": [
+                "2fa",
+                "Authentication",
+                "api-security",
+                "auth",
+                "hmac",
+                "multi-factor-authentication",
+                "one-time-password",
+                "otp",
+                "php-2fa",
+                "php-security",
+                "secure-authentication",
+                "security",
+                "time-based-otp",
+                "totp",
+                "two-factor",
+                "two-factor-authentication",
+                "web-security"
+            ],
+            "support": {
+                "issues": "https://github.com/remotemerge/totp-php/issues",
+                "source": "https://github.com/remotemerge/totp-php/tree/v1.0.2"
+            },
+            "time": "2025-03-01T12:45:43+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
+}
